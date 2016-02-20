@@ -1,15 +1,17 @@
 ###
  * http://usejsdoc.org/
+ * 毎分、時刻をつぶやきます。
 ###
-ronJob = require('cron').CronJob
- 
+cronJob = require('cron').CronJob;
+moment = require('moment');
+
+
 module.exports = (robot) ->
-  send = (room, msg) ->
-    response = new robot.Response(robot, {user : {id : -1, name : room}, text : "none", done : false}, [])
-    response.send msg
- 
-  # *(sec) *(min) *(hour) *(day) *(month) *(day of the week)
-  new cronJob('0 * * * * *', () ->
-    currentTime = new Date
-    send '#test', "current time is #{new Date().currentTime.getHours()}:00."
-  ).start()
+  cronjob = new cronJob(
+    cronTime: '0 * * * * *'  # 毎分00秒
+    start:    true              # すぐにcronのjobを実行するか
+    timeZone: 'Asia/Tokyo'      # タイムゾーン指定
+    onTick: ->                  # 時間が来た時に実行する処理
+      message = '時刻は ' + moment().format('YYYY-MM-DD HH:mm:ss');
+      robot.send {room: 'test'}, message
+    )
