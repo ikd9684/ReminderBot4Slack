@@ -5,6 +5,10 @@
 http = require('http');
 moment = require('moment');
 
+moment.locale('ja', {
+  weekdays: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
+  weekdaysShort: ["日","月","火","水","木","金","土"],
+});
 
 module.exports = (robot) ->
   robot.respond /(つぎ|次|今度)(は)?(いつ)?[？?]/, (msg) ->
@@ -21,4 +25,4 @@ module.exports = (robot) ->
       json = JSON.parse body
       if 0 < Object.keys(json).length
         nextTime = json['items'][0]['start']['dateTime']
-        msg.send moment(nextTime).format('次の開催予定は YYYY年 M月 D日 の HH:mm です。')
+        msg.send moment(nextTime).format('次の開催予定は YYYY年M月D日(ddd) の HH:mm です。')
