@@ -1,14 +1,13 @@
-###
- * http://usejsdoc.org/
- * 毎分、時刻をつぶやきます。
-###
-http = require('http');
-moment = require('moment');
+# Description:
+#   「次はいつ？」の問いかけに対して次回開催日を返答する
+#
+http = require('http')
+moment = require('moment')
 
 moment.locale('ja', {
   weekdays: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
   weekdaysShort: ["日","月","火","水","木","金","土"],
-});
+})
 
 module.exports = (robot) ->
   robot.respond /(つぎ|次|今度)(は)?(いつ)?[？?]/, (msg) ->

@@ -1,9 +1,8 @@
-###
- * http://usejsdoc.org/
- * 毎分、時刻をつぶやきます。
-###
-cronJob = require('cron').CronJob;
-moment = require('moment');
+# Description:
+#   決められた日時になったら実施する処理
+#
+cronJob = require('cron').CronJob
+moment = require('moment')
 
 
 module.exports = (robot) ->
@@ -12,6 +11,6 @@ module.exports = (robot) ->
     start:    true              # すぐにcronのjobを実行するか
     timeZone: 'Asia/Tokyo'      # タイムゾーン指定
     onTick: ->                  # 時間が来た時に実行する処理
-      message = moment().format('YYYY年M月D日 H時になりました。');
+      message = moment().format('YYYY年M月D日 H時になりました。')
       robot.send {room: 'test'}, message
     )
