@@ -3,7 +3,9 @@
 #
 cronJob = require('cron').CronJob
 moment = require('moment')
+moment.locale('ja')
 
+YMD = 'YYYYMMDD'
 
 # module.exports = (robot) ->
 #     cronjob = new cronJob(
