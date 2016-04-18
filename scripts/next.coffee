@@ -1,6 +1,9 @@
 # Description:
 #   「次はいつ？」の問いかけに対して次回開催日を返答する
 #
+Log = require('log')
+@logger = new Log process.env.HUBOT_LOG_LEVEL or 'info'
+
 request = require('request');
 moment = require('moment')
 moment.locale('ja')

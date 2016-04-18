@@ -1,6 +1,9 @@
 # Description:
 #   決められた日時になったら実施する処理
 #
+Log = require('log')
+@logger = new Log process.env.HUBOT_LOG_LEVEL or 'info'
+
 cronJob = require('cron').CronJob
 moment = require('moment')
 moment.locale('ja')
@@ -18,7 +21,16 @@ YMD = 'YYYYMMDD'
 #         )
 
 module.exports = (robot) ->
-    cronjob = new cronJob(
+    # cronjobTest = new cronJob(
+    #     cronTime: '* * * * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
+    #     start:    true              # すぐにcronのjobを実行するか
+    #     timeZone: 'Asia/Tokyo'      # タイムゾーン指定
+    #     onTick: ->                  # 時間が来た時に実行する処理
+    #         now = moment().format('YYYY-MM-DD HH:mm:ss')
+    #         robot.logger.debug 'test' + now
+    # )
+
+    cronjobA = new cronJob(
         cronTime: '00 00 07 * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
@@ -33,8 +45,7 @@ module.exports = (robot) ->
             )
     )
 
-module.exports = (robot) ->
-    cronjob = new cronJob(
+    cronjobB = new cronJob(
         cronTime: '00 00 18 * * *'  # 毎日18:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
