@@ -21,14 +21,14 @@ YMD = 'YYYYMMDD'
 #         )
 
 module.exports = (robot) ->
-    # cronjobTest = new cronJob(
-    #     cronTime: '* * * * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
-    #     start:    true              # すぐにcronのjobを実行するか
-    #     timeZone: 'Asia/Tokyo'      # タイムゾーン指定
-    #     onTick: ->                  # 時間が来た時に実行する処理
-    #         now = moment().format('YYYY-MM-DD HH:mm:ss')
-    #         robot.logger.debug 'test' + now
-    # )
+    cronjobTest = new cronJob(
+        cronTime: '* * * * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
+        start:    true              # すぐにcronのjobを実行するか
+        timeZone: 'Asia/Tokyo'      # タイムゾーン指定
+        onTick: ->                  # 時間が来た時に実行する処理
+            now = moment().format('YYYY-MM-DD HH:mm:ss')
+            robot.logger.debug 'cron test ' + now
+    )
 
     cronjobA = new cronJob(
         cronTime: '00 00 07 * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
