@@ -4,6 +4,7 @@
 Log = require('log')
 @logger = new Log process.env.HUBOT_LOG_LEVEL or 'info'
 
+request = require('request')
 cronJob = require('cron').CronJob
 moment = require('moment')
 moment.locale('ja')
@@ -21,24 +22,26 @@ YMD = 'YYYYMMDD'
 #         )
 
 module.exports = (robot) ->
-    cronjobTest = new cronJob(
+    # cronjobTest = new cronJob(
+    #     cronTime: '* * * * * *'     # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
+    #     start:    true              # すぐにcronのjobを実行するか
+    #     timeZone: 'Asia/Tokyo'      # タイムゾーン指定
+    #     onTick: ->                  # 時間が来た時に実行する処理
+    #         now = moment().format('YYYY-MM-DD HH:mm:ss')
+    #         robot.logger.debug 'cron test: ' + now
+    # )
+
+    cronjobA = new cronJob(
         cronTime: '* * * * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
         onTick: ->                  # 時間が来た時に実行する処理
-            now = moment().format('YYYY-MM-DD HH:mm:ss')
-            robot.logger.debug 'cron test ' + now
-    )
-
-    cronjobA = new cronJob(
-        cronTime: '00 00 07 * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
-        start:    true              # すぐにcronのjobを実行するか
-        timeZone: 'Asia/Tokyo'      # タイムゾーン指定
-        onTick: ->                  # 時間が来た時に実行する処理
+            robot.logger.debug 'cronA'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
                 next = moment(result).format(YMD)
 
+                robot.logger.debug 'cronA: now=' + now + ' ? next=' + next
                 if now is next
                     # 今日がBandroid開催日ならメッセージを出力
                     robot.send {room: 'test'}, next.format('今日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')
@@ -46,15 +49,17 @@ module.exports = (robot) ->
     )
 
     cronjobB = new cronJob(
-        cronTime: '00 00 18 * * *'  # 毎日18:00:00に以下の処理を実施（秒 分 時 日 月 週）
+        cronTime: '* * * * * *'  # 毎日18:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
         onTick: ->                  # 時間が来た時に実行する処理
+            robot.logger.debug 'cronB'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
                 beforeNext = moment(result).add(-1, 'days').format(YMD)
                 next = moment(result).format(YMD)
 
+                robot.logger.debug 'cronB: now=' + now + ' ? beforeNext=' + beforeNext
                 if now is beforeNext
                     # 明日がBandroid開催日ならメッセージを出力
                     robot.send {room: 'test'}, next.format('明日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')

@@ -4,7 +4,7 @@
 Log = require('log')
 @logger = new Log process.env.HUBOT_LOG_LEVEL or 'info'
 
-request = require('request');
+request = require('request')
 moment = require('moment')
 moment.locale('ja')
 
