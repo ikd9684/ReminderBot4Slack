@@ -32,16 +32,16 @@ module.exports = (robot) ->
     # )
 
     cronjobA = new cronJob(
-        cronTime: '* * * * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
+        cronTime: '00 00 07 * * *'  # 毎日07:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
         onTick: ->                  # 時間が来た時に実行する処理
-            robot.logger.debug 'cronA'
+            robot.logger.debug 'cron07'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
                 next = moment(result).format(YMD)
 
-                robot.logger.debug 'cronA: now=' + now + ' ? next=' + next
+                robot.logger.debug 'cron07: now=' + now + ' ? next=' + next
                 if now is next
                     # 今日がBandroid開催日ならメッセージを出力
                     robot.send {room: 'test'}, next.format('今日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')
@@ -49,17 +49,17 @@ module.exports = (robot) ->
     )
 
     cronjobB = new cronJob(
-        cronTime: '* * * * * *'  # 毎日18:00:00に以下の処理を実施（秒 分 時 日 月 週）
+        cronTime: '00 00 18 * * *'  # 毎日18:00:00に以下の処理を実施（秒 分 時 日 月 週）
         start:    true              # すぐにcronのjobを実行するか
         timeZone: 'Asia/Tokyo'      # タイムゾーン指定
         onTick: ->                  # 時間が来た時に実行する処理
-            robot.logger.debug 'cronB'
+            robot.logger.debug 'cron18'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
                 beforeNext = moment(result).add(-1, 'days').format(YMD)
                 next = moment(result).format(YMD)
 
-                robot.logger.debug 'cronB: now=' + now + ' ? beforeNext=' + beforeNext
+                robot.logger.debug 'cron18: now=' + now + ' ? beforeNext=' + beforeNext
                 if now is beforeNext
                     # 明日がBandroid開催日ならメッセージを出力
                     robot.send {room: 'test'}, next.format('明日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')
