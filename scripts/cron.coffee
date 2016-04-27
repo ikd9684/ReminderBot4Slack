@@ -39,12 +39,16 @@ module.exports = (robot) ->
             robot.logger.debug 'cron07'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
-                next = moment(result).format(YMD)
+                nextDate = moment(result)
+                next = nextDate.format(YMD)
 
                 robot.logger.debug 'cron07: now=' + now + ' ? next=' + next
                 if now is next
                     # 今日がBandroid開催日ならメッセージを出力
-                    robot.send {room: 'test'}, next.format('今日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')
+                    md = nextDate.format('M月D日(ddd)')
+                    hm = nextDate.format('HH:mm')
+                    message = '今日 ' + md + ' は Bandroid の開催日です！\n開始予定時刻は ' + hm + ' です。'
+                    robot.send {room: 'test'}, message
             )
     )
 
@@ -56,13 +60,17 @@ module.exports = (robot) ->
             robot.logger.debug 'cron18'
             getNextEvent( (result) ->
                 now = moment().format(YMD)
-                beforeNext = moment(result).add(-1, 'days').format(YMD)
-                next = moment(result).format(YMD)
+                nextDate = moment(result)
+                beforeNext = nextDate.add(-1, 'days').format(YMD)
+                next = nextDate.format(YMD)
 
                 robot.logger.debug 'cron18: now=' + now + ' ? beforeNext=' + beforeNext
                 if now is beforeNext
                     # 明日がBandroid開催日ならメッセージを出力
-                    robot.send {room: 'test'}, next.format('明日 M月D日(ddd) は Bandroid の開催日です！\n開始予定時刻は HH:mm です。')
+                    md = nextDate.format('M月D日(ddd)')
+                    hm = nextDate.format('HH:mm')
+                    message = '明日 ' + md + ' は Bandroid の開催日です！\n開始予定時刻は ' + hm + ' です。'
+                    robot.send {room: 'test'}, message
             )
     )
 
