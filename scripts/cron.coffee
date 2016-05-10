@@ -69,7 +69,7 @@ module.exports = (robot) ->
                     md = moment(result).format('M月D日(ddd)')
                     hm = moment(result).format('HH:mm')
                     message = '明日 ' + md + ' は Bandroid の開催日です！\n開始予定時刻は ' + hm + ' です。'
-                    # robot.send {room: 'test'}, message
+                    robot.send {room: 'test'}, message
                     robot.logger.debug 'send message: ' + message
             )
     )
