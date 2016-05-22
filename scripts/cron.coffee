@@ -11,6 +11,8 @@ moment.locale('ja')
 
 YMD = 'YYYYMMDD'
 
+roomName = 'test'
+
 # module.exports = (robot) ->
 #     cronjob = new cronJob(
 #         cronTime: '0 0 * * * *'     # 毎時00分00秒（秒 分 時 日 月 週）
@@ -27,8 +29,8 @@ module.exports = (robot) ->
     #     start:    true              # すぐにcronのjobを実行するか
     #     timeZone: 'Asia/Tokyo'      # タイムゾーン指定
     #     onTick: ->                  # 時間が来た時に実行する処理
-    #         now = moment().format('YYYY-MM-DD HH:mm:ss')
-    #         robot.logger.debug 'cron test: ' + now
+    #         today = moment().format('YYYY-MM-DD HH:mm:ss')
+    #         robot.logger.debug 'cron test: ' + today
     # )
 
     cronjobA = new cronJob(
@@ -38,17 +40,16 @@ module.exports = (robot) ->
         onTick: ->                  # 時間が来た時に実行する処理
             robot.logger.debug 'cron07'
             getNextEvent( (result) ->
-                now = moment().format(YMD)
+                today = moment().format(YMD)
                 next = moment(result).format(YMD)
 
-                robot.logger.debug 'cron07: now=' + now + ' ? next=' + next
-                if now is next
+                robot.logger.debug 'cron07: today=' + today + ' ? next=' + next
+                if today is next
                     # 今日がBandroid開催日ならメッセージを出力
                     md = moment(result).format('M月D日(ddd)')
                     hm = moment(result).format('HH:mm')
                     message = '今日 ' + md + ' は Bandroid の開催日です！\n開始予定時刻は ' + hm + ' です。'
-                    robot.send {room: 'test'}, message
-                    robot.logger.debug 'send message: ' + message
+                    robot.send {room: roomName}, message
             )
     )
 
@@ -59,18 +60,17 @@ module.exports = (robot) ->
         onTick: ->                  # 時間が来た時に実行する処理
             robot.logger.debug 'cron18'
             getNextEvent( (result) ->
-                now = moment().format(YMD)
+                today = moment().format(YMD)
                 beforeNext = moment(result).add(-1, 'days').format(YMD)
                 next = moment(result).format(YMD)
 
-                robot.logger.debug 'cron18: now=' + now + ' ? beforeNext=' + beforeNext
-                if now is beforeNext
+                robot.logger.debug 'cron18: today=' + today + ' ? beforeNext=' + beforeNext
+                if today is beforeNext
                     # 明日がBandroid開催日ならメッセージを出力
                     md = moment(result).format('M月D日(ddd)')
                     hm = moment(result).format('HH:mm')
                     message = '明日 ' + md + ' は Bandroid の開催日です！\n開始予定時刻は ' + hm + ' です。'
-                    robot.send {room: 'test'}, message
-                    robot.logger.debug 'send message: ' + message
+                    robot.send {room: roomName}, message
             )
     )
 
@@ -78,7 +78,7 @@ getNextEvent = (func) ->
     uri = 'https://www.googleapis.com/calendar/v3/calendars/excite-software.net_uvouli16riv9sq2s89liof0n4s@group.calendar.google.com/events'
     query = {
         key: 'AIzaSyDrsxDDJrf8liR4IKfkOfCPFCByMMq3OJY',
-        timeMin: moment().format('YYYY-MM-DD') + 'T20:00:00.000Z',
+        timeMin: moment().format('YYYY-MM-DD') + 'T18:00:00.000Z',
         maxResult: 1,
         orderBy: 'startTime',
         singleEvents: true,
